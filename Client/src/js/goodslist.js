@@ -225,27 +225,12 @@ function goodsSearch() {
                             var goodsTitle = data[i].goods_title;
                         }
 
-                        //商品模板
-                        goodsStr = '<div class="goods-item"><div class="goods-pic-wrap"><a href="./item.html?id=' + data[i].id + '" target="_blank"><img src="' + data[i].goods_img + '" alt=""></a></div><div class="goods-info"><div class="line line1 clearfix"><div class="goods-price-box"><span>￥</span><strong class="goods-price">' + data[i].goods_price.toFixed(2) + '</strong></div><div class="pay-number">' + data[i].goods_sales + '人付款</div><div class="goods-service-icon"></div></div><div class="line line2 clearfix"><a href="./item.html?id=' + data[i].id + '" class="goods-title-dec" target="_blank">' + goodsTitle + '</a></div><div class="line line3 clearfix"><div class="goods-shop"><a href="./item.html?id=' + data[i].id + '" class="shop-link" target="_blank"><span class="shop-icon"></span><span class="shop-name">' + data[i].shop_name + '</span></a></div><div class="location">' + '广东 深圳' + '</div></div><div class="line line4 clearfix"><div class="shop-honors"><ul class="clearfix"></ul></div><div class="wangwang-icon"><a href="javascript:;"></a></div></div></div></div>';
+                        //商品模板, 添加checkbox, 参考layui的form模块, 判断checked是否加上
+                        goodsStr = '<div class="goods-item"><input type="checkbox" id="check'+data[i].id+'" lay-skin="primary" title="选择" ><div class="goods-pic-wrap"><a href="./item.html?id=' + data[i].id + '" target="_blank"><img src="' + data[i].goods_img + '" alt=""></a></div><div class="goods-info"><div class="line line1 clearfix"><div class="goods-price-box"><span>￥</span><strong class="goods-price">' + data[i].goods_price.toFixed(2) + '</strong></div><div class="pay-number">' + data[i].goods_sales + '人付款</div><div class="goods-service-icon"></div></div><div class="line line2 clearfix"><a href="./item.html?id=' + data[i].id + '" class="goods-title-dec" target="_blank">' + goodsTitle + '</a></div><div class="line line3 clearfix"><div class="goods-shop"><a href="./item.html?id=' + data[i].id + '" class="shop-link" target="_blank"><span class="shop-icon"></span><span class="shop-name">' + data[i].shop_name + '</span></a></div><div class="location">' + '广东 深圳' + '</div></div><div class="line line4 clearfix"><div class="shop-honors"><ul class="clearfix"></ul></div><div class="wangwang-icon"><a href="javascript:;"></a></div></div></div></div>';
                         goodsArr.push(goodsStr);
                     }
                     goodsItemsBox.innerHTML = goodsArr.join('');
 
-                    //渲染掌柜热卖
-                    var hotArr = [];
-                    var hotGoods = [];
-                    var hotStr = '';
-                    for (var i = 0; i < 16; i++) {
-                        var random = getRandom(0, goodsData.length - 1);
-                        while (hotArr.indexOf(random) !== -1) {
-                            random = getRandom(0, goodsData.length - 1);
-                        }
-
-                        hotArr.push(random);
-                        hotStr = ' <li><div class="hot-goods-img-wrap"><a href="./item.html?id=' + goodsData[random].id + '" target="_blank"><img src="' + goodsData[random].goods_img + '" alt=""></a></div><div class="hot-goods-info clearfix"><div class="hot-goods-price"><a href="./item.html?id=' + goodsData[random].id + '" target="_blank"><em>¥</em><strong>' + goodsData[random].goods_price.toFixed(2) + '</strong></a></div><div class="hot-goods-sales"><a href="./item.html?id=' + goodsData[random].id + '" target="_blank">销量：<span>' + goodsData[random].goods_sales + '</span></a></div></div><div class="hot-goods-title-mask"><a href="./item.html?id=' + goodsData[random].id + '" target="_blank"><h3 class="title">' + goodsData[random].goods_title + '</h3></a></div></li>';
-                        hotGoods.push(hotStr);
-                    }
-                    hotGoodsBox.innerHTML = hotGoods.join('');
 
                 }
             });
