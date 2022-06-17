@@ -248,12 +248,49 @@ function goodsSearch() {
         //获取选中的商品id，获取id为goodsItemsBox的div下的所有checkbox的状态
         var goodsIdArr = [];
         var goodsItemsBox = $("#goodsItemsBox > div > :checkbox");
+        var goodsPictures = $("#goodsItemsBox > div > .goods-pic-wrap > a > img");
+        var goodsPrice = $("#goodsItemsBox > div > .goods-info > .line1 > .goods-price-box > .goods-price");
+        var goodstitle = $("#goodsItemsBox > div > .goods-info > .line2 > .goods-title-dec");
+        var shopName = $("#goodsItemsBox > div > .goods-info > .line3 > div > a> .shop-name");
+        // 收集所有选中的商品的图片，title，店铺名称信息
+        var goodsSelected = [];
         goodsItemsBox.each(function(index, item) {
             if (item.checked) {
                 goodsIdArr.push(item.id);
+                var one = {
+                    id: item.id,
+                    img: goodsPictures[index].src,
+                    title: goodstitle[index].innerText,
+                    shopName: shopName[index].innerText,
+                    price: goodsPrice[index].innerText
+                }
+                goodsSelected.push(one);
             }
         });
-        alert(goodsIdArr);
+        //判断用户提交的商品个数时是否大于1，如果为空，则提示用户
+        if (goodsIdArr.length < 1) {
+            layer.msg('请选择商品！，选中的商品个数太少！',{icon:5});
+            return;
+        }
+        //发送数据到后台，地址是http://127.0.0.1:2266/api/labeled, 查看baseAPI
+        $.ajax({
+            url: ':2266/api/labeled',
+            method: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ data: goodsSelected }),
+            dataType: 'json',
+            success: function(res) {
+                if (res.status !== 200) {
+                    return console.log(res.msg);
+                }
+                layer.msg('提交成功！', {icon: 1});
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown){
+                console.log(textStatus);
+                console.log(errorThrown);
+                layer.msg('提交失败，请联系管理员', {icon: 2})
+            }
+        });
     });
 })();
 

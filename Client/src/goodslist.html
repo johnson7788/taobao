@@ -105,7 +105,10 @@
                     <div class="hot-goods-title">
                         <a href="#">请选择至少5个商品</a>
                     </div>
-                    <div class="layui-btn-container" style="z-index: 9999; position: fixed ! important; right: 120px; top: 150px;"> <button type="button" id="btn_commit" class="layui-btn layui-btn-lg">确认提交</button></div>
+                    <div style="z-index: 9999; position: fixed ! important; right: 120px; top: 180px;">
+                        <input type="text" id="product_name" required lay-verify="required" placeholder="输入库中商品名称" autocomplete="off" class="layui-input">   
+                        <div class="layui-btn-container"> <button type="button" id="btn_commit" class="layui-btn layui-btn-lg">确认提交</button></div>
+                    </div>
                     <ul class="hot-goods-list" id="hotGoodsBox">
                     </ul>
                 </div>
