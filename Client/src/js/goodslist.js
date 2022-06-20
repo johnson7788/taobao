@@ -281,18 +281,28 @@ function goodsSearch() {
             layer.msg('请选择商品！，选中的商品个数太少！',{icon:5});
             return;
         }
+        // 获取用户提交的关联的商品的名称
+        var productName = $("#product_name").val();
+        var labelData = {
+            productName: productName,
+            keyword: keyword,
+            goodsSelected: goodsSelected,
+        }
         //发送数据到后台，地址是http://127.0.0.1:2266/api/labeled, 查看baseAPI
         $.ajax({
             url: ':2266/api/labeled',
             method: 'POST',
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({ data: goodsSelected }),
+            data: JSON.stringify({ data: labelData }),
             dataType: 'json',
             success: function(res) {
                 if (res.status !== 200) {
                     return console.log(res.message);
                 }
                 layer.msg('提交成功！', {icon: 1});
+                // 清空搜索框和产品框
+                $("#product_name").val('');
+                $(".search-input").val('')
             },
             error : function(XMLHttpRequest, textStatus, errorThrown){
                 console.log(textStatus);
