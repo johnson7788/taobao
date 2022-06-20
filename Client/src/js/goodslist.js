@@ -11,7 +11,7 @@ if (keyword.trim()) {
 goodsSearch();
 
 function goodsSearch() {
-    $(".search-btn").on("click", function() {
+    $(".search-submit-btn").on("click", function() {
         if ($(".search-input").val().trim()) {
             return location.href = './goodslist.html?keyword=' + $(".search-input").val().trim();
         } else {
@@ -43,20 +43,27 @@ function goodsSearch() {
         var goodsData = [];
 
         $.ajax({
-            url: '/api/goodslist',
+            url: ':2266/api/goodslist',
             method: 'GET',
             data: {
                 keyword: keyword
             },
             success: function(res) {
-                if (res.status !== 1) {
+                if (res.status !== 200) {
+                    console.log(res.message + "返回的状态码不是200");
                     return console.log(res.message);
                 }
                 goodsData = res.data;
                 //渲染商品列表
                 renderGoodsList(res.total, res.limit);
+            },
+            error: function(err) {
+                console.log("请求商品数据失败：" + err);
             }
         });
+        if (goodsData.length === 0) {
+            return;
+        }
 
         //商品排序
         $(".sort-module .sort-btn").on("click", function() {
@@ -281,7 +288,7 @@ function goodsSearch() {
             dataType: 'json',
             success: function(res) {
                 if (res.status !== 200) {
-                    return console.log(res.msg);
+                    return console.log(res.message);
                 }
                 layer.msg('提交成功！', {icon: 1});
             },
