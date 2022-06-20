@@ -50,6 +50,7 @@ function goodsSearch() {
             },
             success: function(res) {
                 if (res.status !== 200) {
+                    layer.msg('请求商品数据失败：请联系管理员', {icon: 1});
                     console.log(res.message + "返回的状态码不是200");
                     return console.log(res.message);
                 }
@@ -58,6 +59,7 @@ function goodsSearch() {
                 renderGoodsList(res.total, res.limit);
             },
             error: function(err) {
+                layer.msg('接口请求失败：请联系管理员', {icon: 1});
                 console.log("请求商品数据失败：" + err);
             }
         });
