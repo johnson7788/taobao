@@ -152,9 +152,8 @@ def goodslist_data():
     args_dict = request.args
     keyword = args_dict.get('keyword')
     if not keyword:
-        print(f"用户提交的关键字为空，给一个测试的关键字的数据，资生堂")
-        keyword = "资生堂"
-        # result = {'status': 200, 'message': 'success', 'total': 0, 'limit': 0, 'data': []}
+        print(f"用户提交的关键字为空，请给一个关键字")
+        result = {'status': 200, 'message': '请提供一个关键字', 'total': 0, 'limit': 0, 'data': []}
     else:
         print(f"收到了用户提交的数据{keyword}")
     data = get_tmall_data(keyword)

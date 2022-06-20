@@ -41,7 +41,13 @@ function goodsSearch() {
 
         //请求商品数据
         var goodsData = [];
-
+        
+        //如果给的keyword为空，那么就设置keyword为 “资生堂”
+        if (!keyword) {
+            keyword = '资生堂';
+            // 设置搜索框也为资生堂
+            $(".search-input").val(keyword);
+        }
         $.ajax({
             url: ':2266/api/goodslist',
             method: 'GET',
