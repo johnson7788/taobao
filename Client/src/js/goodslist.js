@@ -241,7 +241,7 @@ function goodsSearch() {
                         }
 
                         //商品模板, 添加checkbox, 参考layui的form模块, 判断checked是否加上
-                        goodsStr = '<div class="goods-item"><input type="checkbox" id="'+data[i].id+'" lay-skin="primary" title="选择" ><div class="goods-pic-wrap"><a href="./item.html?id=' + data[i].id + '" target="_blank"><img src="' + data[i].goods_img + '" alt=""></a></div><div class="goods-info"><div class="line line1 clearfix"><div class="goods-price-box"><span>￥</span><strong class="goods-price">' + data[i].goods_price.toFixed(2) + '</strong></div><div class="pay-number">' + data[i].goods_sales + '人付款</div><div class="goods-service-icon"></div></div><div class="line line2 clearfix"><a href="./item.html?id=' + data[i].id + '" class="goods-title-dec" target="_blank">' + goodsTitle + '</a></div><div class="line line3 clearfix"><div class="goods-shop"><a href="./item.html?id=' + data[i].id + '" class="shop-link" target="_blank"><span class="shop-icon"></span><span class="shop-name">' + data[i].shop_name + '</span></a></div><div class="location">' + '广东 深圳' + '</div></div><div class="line line4 clearfix"><div class="shop-honors"><ul class="clearfix"></ul></div><div class="wangwang-icon"><a href="javascript:;"></a></div></div></div></div>';
+                        goodsStr = '<div class="goods-item"><input type="checkbox" id="'+data[i].id+'" lay-skin="primary" title="选择" ><div class="goods-pic-wrap"><a href="javascript:void(0)" ><img src="' + data[i].goods_img + '" alt=""></a></div><div class="goods-info"><div class="line line1 clearfix"><div class="goods-price-box"><span>￥</span><strong class="goods-price">' + data[i].goods_price.toFixed(2) + '</strong></div><div class="pay-number">' + data[i].goods_sales + '人付款</div><div class="goods-service-icon"></div></div><div class="line line2 clearfix"><a href="./item.html?id=' + data[i].id + '" class="goods-title-dec" target="_blank">' + goodsTitle + '</a></div><div class="line line3 clearfix"><div class="goods-shop"><a href="./item.html?id=' + data[i].id + '" class="shop-link" target="_blank"><span class="shop-icon"></span><span class="shop-name">' + data[i].shop_name + '</span></a></div><div class="location">' + '广东 深圳' + '</div></div><div class="line line4 clearfix"><div class="shop-honors"><ul class="clearfix"></ul></div><div class="wangwang-icon"><a href="javascript:;"></a></div></div></div></div>';
                         goodsArr.push(goodsStr);
                     }
                     goodsItemsBox.innerHTML = goodsArr.join('');
@@ -254,6 +254,19 @@ function goodsSearch() {
             var pageTextDom = document.querySelector('.goods-page').querySelector('.layui-laypage-skip');
             var totalPageText = document.createTextNode('共 ' + Math.ceil(total / limit) + ' 页，');
             pageTextDom.insertBefore(totalPageText, pageTextDom.childNodes[0]);
+            console.log("更改checkbox状态");
+            //给每个商品goods-pic-wrap加上点击事件，如果用户点击后，更改checkbox的状态
+            $(".goods-pic-wrap > a").each(function(index, item) {
+                $(item).on("click", function() {
+                    var checkbox = $(item).parent().parent().find("input[type='checkbox']");
+                    //如果是true，改成false，如果是false，改成true
+                    if (checkbox.prop("checked")) {
+                        checkbox.prop("checked", false);
+                    }else{
+                        checkbox.prop("checked", true);
+                    }
+                });
+            });
         }
 
     });

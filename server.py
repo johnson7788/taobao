@@ -5,16 +5,18 @@
 # @Author: 
 # @Desc  : 后台接口，对Client的数据进行承接，操作neo4j数据库
 
+import os
 import time
 from tkinter import N
 import requests
 import pymongo
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort,redirect, send_from_directory
 from config import SPIDER_URL, MONGO_HOST
 from flask_cors import CORS
-app = Flask(__name__)
+app = Flask(__name__,  static_url_path='/Client/src')
 CORS(app, supports_credentials=True)
 
+root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Client", "src")
 
 def mongo_insert(data, database='label', collection='tmall', clean_before_insert=False, only_clean=False):
     """
@@ -83,12 +85,13 @@ def tmall_spider(keyword="资生堂"):
     }
     text = {}
     count = 0
-    while not text:
+    # 正确的结果是列表，如果是列表，那么就说明是没有获取爬取成功的的
+    while isinstance(text, dict):
         response = requests.post(url, headers=headers, json=data, timeout=6)
         text = response.json()
         time.sleep(2)
         count += 1
-        print(f"重试中, 重试第{count}次...")
+        print(f"重试中, 重试第{count}次...,当前的结果是: {text}")
     if text:
         # 插入一条数据到到mongo数据库中
         data = [
@@ -124,11 +127,11 @@ def get_tmall_data(keyword="资生堂"):
             "category": "护肤",
             "goods_title": x["title"],
             "goods_price": float(x["price"]),
-            "goods_sales": x["month_sale"],
+            "goods_sales": x.get("month_sale", 0),
             "goods_img": x["shop_img"],
             "shop_name": x["shopname"],
             "seller": x["shopname"],
-            "cmt_num": int(x["comments"]),  # 评论数量
+            "cmt_num": int(x.get("comments",0)),  # 评论数量
         }
         data.append(one)
     return data
@@ -160,6 +163,13 @@ def goodslist_data():
     result = {'status': 200, 'message': 'success', 'total':len(data), 'limit':48, 'data':data}
     return jsonify(result)
 
+
+@app.route('/', methods=['GET'])
+def index():
+    """
+    主页
+    """
+    return send_from_directory(root, 'goodslist.html')
 
 @app.route("/ping", methods=['GET','POST'])
 def ping():
